@@ -6,12 +6,12 @@
   <title>Valentine?</title>
   <style>
     :root{
-      --bg: #ffd6e8;
+      --bg:#ffd6e8;
       --bg2:#ffb7d5;
       --text:#3a0f25;
-      --yes:#ff4fa0;
-      --yes2:#ff2f8f;
       --card:#ffffffcc;
+      --accent:#ff2f8f;
+      --accent2:#ff4fa0;
     }
     *{ box-sizing:border-box; }
     body{
@@ -21,24 +21,68 @@
       place-items:center;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: linear-gradient(135deg, var(--bg), var(--bg2));
-      color: var(--text);
+      color:var(--text);
       overflow:hidden;
     }
+
     .card{
-      width:min(720px, 92vw);
-      padding: 34px 22px;
+      width:min(820px, 92vw);
+      padding: 30px 22px;
       border-radius: 26px;
       background: var(--card);
       border: 2px solid #ffffff80;
       box-shadow: 0 18px 45px rgba(0,0,0,.12);
       text-align:center;
-      position:relative;
     }
-    h1{
-      margin: 0 0 22px;
+
+    /* ===== Intro screen ===== */
+    #intro h1{
+      margin: 0 0 12px;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 1000;
+      letter-spacing:.3px;
+      color: var(--accent);
+      text-transform: lowercase;
+    }
+    #intro p{
+      margin: 0 0 18px;
+      font-size: clamp(16px, 2.2vw, 18px);
+      font-weight: 800;
+      opacity:.85;
+    }
+    .playBtn{
+      border:0;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color:#fff;
+      padding: 14px 18px;
+      border-radius: 999px;
+      font-weight: 1000;
+      font-size: 18px;
+      cursor:pointer;
+      box-shadow: 0 12px 22px rgba(255,47,143,.25);
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+    .playIcon{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+      display:grid;
+      place-items:center;
+      font-size: 16px;
+      font-weight: 1000;
+    }
+
+    /* ===== Valentine screen ===== */
+    .hidden{ display:none; }
+
+    #question h1{
+      margin:0 0 18px;
       font-size: clamp(34px, 5vw, 56px);
-      font-weight: 900;
-      letter-spacing: .2px;
+      font-weight: 1000;
+      letter-spacing:.2px;
     }
     .btnArea{
       position:relative;
@@ -51,10 +95,10 @@
       padding: 16px 26px;
       border-radius: 14px;
       font-size: 20px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       user-select:none;
-      transition: transform .12s ease;
+      transition: transform .12s ease, filter .12s ease;
       position:absolute;
       top: 20px;
     }
@@ -62,10 +106,12 @@
 
     #yesBtn{
       left: 0;
-      background: linear-gradient(135deg, var(--yes), var(--yes2));
+      background: linear-gradient(135deg, #ff4fa0, #ff2f8f);
       color: white;
       box-shadow: 0 14px 26px rgba(255, 47, 143, .25);
     }
+    #yesBtn:hover{ filter: brightness(1.03); }
+
     #noBtn{
       right: 0;
       background: white;
@@ -74,7 +120,7 @@
       box-shadow: 0 12px 22px rgba(0,0,0,.08);
     }
 
-    /* Optional tiny hearts for vibe */
+    /* Floating hearts */
     .heart{
       position:fixed;
       bottom:-30px;
@@ -90,7 +136,25 @@
   </style>
 </head>
 <body>
-  <div class="card">
+
+  <!-- ===== INTRO SCREEN (only thing visible at first) ===== -->
+  <div class="card" id="intro">
+    <h1>click me</h1>
+    <p>(press play to enter 🥺💗)</p>
+
+    <button class="playBtn" id="startBtn" type="button">
+      <span class="playIcon">▶</span>
+      play
+    </button>
+
+    <!-- Upload your audio file into the repo and name it: ask.mp3 -->
+    <audio id="voice" preload="auto">
+      <source src="ask.m4a" type="audio/mp4">
+    </audio>
+  </div>
+
+  <!-- ===== QUESTION SCREEN (revealed after click) ===== -->
+  <div class="card hidden" id="question" aria-live="polite">
     <h1>Will you be my Valentine? 💗</h1>
 
     <div class="btnArea" id="btnArea">
@@ -100,6 +164,12 @@
   </div>
 
   <script>
+    const intro = document.getElementById("intro");
+    const question = document.getElementById("question");
+
+    const startBtn = document.getElementById("startBtn");
+    const voice = document.getElementById("voice");
+
     const noBtn = document.getElementById("noBtn");
     const btnArea = document.getElementById("btnArea");
 
@@ -107,7 +177,6 @@
       const area = btnArea.getBoundingClientRect();
       const btn  = noBtn.getBoundingClientRect();
 
-      // Keep inside the area with a little padding
       const padding = 8;
       const maxX = area.width - btn.width - padding;
       const maxY = area.height - btn.height - padding;
@@ -115,28 +184,38 @@
       const x = Math.random() * maxX + padding;
       const y = Math.random() * maxY + padding;
 
-      // Position relative to btnArea
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
-      noBtn.style.right = "auto"; // override the initial "right: 0"
+      noBtn.style.right = "auto";
     }
 
-    // Every time the mouse enters the NO button, move it
-    noBtn.addEventListener("mouseenter", moveNo);
+    // reveal question screen + start audio on click
+    startBtn.addEventListener("click", async () => {
+      // swap screens
+      intro.classList.add("hidden");
+      question.classList.remove("hidden");
 
-    // Also move on touch attempts (mobile)
+      // start audio (allowed because user clicked)
+      try { await voice.play(); } catch(e) {}
+
+      // start hearts
+      setInterval(spawnHeart, 550);
+    });
+
+    // NO dodges every time he tries
+    noBtn.addEventListener("mouseenter", moveNo);
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
       moveNo();
-    }, { passive: false });
+    }, { passive:false });
 
-    // YES goes to a new page
+    // YES goes to yay page
     document.getElementById("yesBtn").addEventListener("click", () => {
       window.location.href = "yay.html";
     });
 
-    // Cute hearts (optional)
-    function heart() {
+    // cute floating hearts
+    function spawnHeart(){
       const h = document.createElement("div");
       h.className = "heart";
       h.textContent = Math.random() > 0.5 ? "💗" : "💖";
@@ -145,9 +224,8 @@
       const dur = 4 + Math.random()*3;
       h.style.animationDuration = dur + "s";
       document.body.appendChild(h);
-      setTimeout(() => h.remove(), dur*1000);
+      setTimeout(()=>h.remove(), dur*1000);
     }
-    setInterval(heart, 500);
   </script>
 </body>
 </html>
