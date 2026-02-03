@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine?</title>
+  <style>
+    :root{
+      --bg: #ffd6e8;
+      --bg2:#ffb7d5;
+      --text:#3a0f25;
+      --yes:#ff4fa0;
+      --yes2:#ff2f8f;
+      --card:#ffffffcc;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg), var(--bg2));
+      color: var(--text);
+      overflow:hidden;
+    }
+    .card{
+      width:min(720px, 92vw);
+      padding: 34px 22px;
+      border-radius: 26px;
+      background: var(--card);
+      border: 2px solid #ffffff80;
+      box-shadow: 0 18px 45px rgba(0,0,0,.12);
+      text-align:center;
+      position:relative;
+    }
+    h1{
+      margin: 0 0 22px;
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .btnArea{
+      position:relative;
+      width: min(520px, 86vw);
+      height: 120px;
+      margin: 0 auto;
+    }
+    .btn{
+      border: 0;
+      padding: 16px 26px;
+      border-radius: 14px;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select:none;
+      transition: transform .12s ease;
+      position:absolute;
+      top: 20px;
+    }
+    .btn:active{ transform: scale(.98); }
+
+    #yesBtn{
+      left: 0;
+      background: linear-gradient(135deg, var(--yes), var(--yes2));
+      color: white;
+      box-shadow: 0 14px 26px rgba(255, 47, 143, .25);
+    }
+    #noBtn{
+      right: 0;
+      background: white;
+      color: var(--text);
+      border: 2px solid rgba(255, 47, 143, .25);
+      box-shadow: 0 12px 22px rgba(0,0,0,.08);
+    }
+
+    /* Optional tiny hearts for vibe */
+    .heart{
+      position:fixed;
+      bottom:-30px;
+      font-size: 18px;
+      animation: floatUp linear forwards;
+      opacity:.9;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(0) translateX(0); }
+      to{ transform: translateY(-120vh) translateX(var(--drift)); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Will you be my Valentine? 💗</h1>
+
+    <div class="btnArea" id="btnArea">
+      <button class="btn" id="yesBtn" type="button">YES</button>
+      <button class="btn" id="noBtn" type="button">NO</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const btnArea = document.getElementById("btnArea");
+
+    function moveNo() {
+      const area = btnArea.getBoundingClientRect();
+      const btn  = noBtn.getBoundingClientRect();
+
+      // Keep inside the area with a little padding
+      const padding = 8;
+      const maxX = area.width - btn.width - padding;
+      const maxY = area.height - btn.height - padding;
+
+      const x = Math.random() * maxX + padding;
+      const y = Math.random() * maxY + padding;
+
+      // Position relative to btnArea
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      noBtn.style.right = "auto"; // override the initial "right: 0"
+    }
+
+    // Every time the mouse enters the NO button, move it
+    noBtn.addEventListener("mouseenter", moveNo);
+
+    // Also move on touch attempts (mobile)
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNo();
+    }, { passive: false });
+
+    // YES goes to a new page
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      window.location.href = "yay.html";
+    });
+
+    // Cute hearts (optional)
+    function heart() {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = Math.random() > 0.5 ? "💗" : "💖";
+      h.style.left = (Math.random() * window.innerWidth) + "px";
+      h.style.setProperty("--drift", (Math.random()*160 - 80).toFixed(0) + "px");
+      const dur = 4 + Math.random()*3;
+      h.style.animationDuration = dur + "s";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), dur*1000);
+    }
+    setInterval(heart, 500);
+  </script>
+</body>
+</html>
