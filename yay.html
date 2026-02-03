@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>YAYYYYYYY</title>
+  <title>YAYYYYYYYY</title>
   <style>
     :root{
-      --bg: #ffd6e8;
+      --bg1:#ffd6e8;
       --bg2:#ffb7d5;
       --text:#3a0f25;
       --card:#ffffffcc;
+      --accent:#ff2f8f;
     }
     *{ box-sizing:border-box; }
     body{
@@ -18,37 +19,202 @@
       display:grid;
       place-items:center;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(135deg, var(--bg), var(--bg2));
-      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color:var(--text);
       overflow:hidden;
     }
     .card{
-      width:min(760px, 92vw);
-      padding: 34px 22px;
+      width:min(920px, 92vw);
+      padding: 32px 22px;
       border-radius: 26px;
       background: var(--card);
       border: 2px solid #ffffff80;
       box-shadow: 0 18px 45px rgba(0,0,0,.12);
       text-align:center;
+      position:relative;
     }
     h1{
-      margin: 0 0 16px;
-      font-size: clamp(42px, 6vw, 72px);
+      margin: 0 0 14px;
+      font-size: clamp(44px, 6vw, 78px);
       font-weight: 1000;
-      letter-spacing: .3px;
+      letter-spacing:.3px;
     }
-    p{
-      margin: 0;
-      font-size: clamp(18px, 2.6vw, 24px);
-      line-height: 1.4;
+    .mainText{
+      margin: 0 auto;
+      max-width: 70ch;
+      font-size: clamp(18px, 2.4vw, 24px);
+      line-height: 1.45;
       font-weight: 700;
+    }
+    .small{
+      margin-top: 18px;
+      font-size: clamp(14px, 2vw, 16px);
+      opacity:.85;
+      font-weight: 700;
+    }
+
+    .rewards{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+      gap: 34px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+    .reward{
+      width: min(240px, 80vw);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .emojiBtn{
+      font-size: 64px;
+      line-height: 1;
+      border: 0;
+      background: white;
+      border-radius: 20px;
+      padding: 14px 18px;
+      cursor:pointer;
+      box-shadow: 0 14px 26px rgba(0,0,0,.12);
+      border: 2px solid rgba(255, 47, 143, .22);
+      transition: transform .12s ease, filter .12s ease;
+      user-select:none;
+    }
+    .emojiBtn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+    .emojiBtn:active{ transform: translateY(0) scale(.99); }
+
+    .arrowWrap{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing:.3px;
+    }
+    .arrow{
+      font-size: 22px;
+      transform: translateY(-1px);
+    }
+    .clickMe{
+      background: rgba(255,47,143,.12);
+      border: 1px solid rgba(255,47,143,.25);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    /* Music hint */
+    .musicHint{
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 800;
+      opacity:.8;
+    }
+    .musicBtn{
+      margin-top: 10px;
+      border:0;
+      background: linear-gradient(135deg, #ff4fa0, #ff2f8f);
+      color:#fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 900;
+      cursor:pointer;
+      box-shadow: 0 12px 22px rgba(255,47,143,.25);
+    }
+
+    /* Floating hearts */
+    .heart{
+      position:fixed;
+      bottom:-30px;
+      font-size: 18px;
+      animation: floatUp linear forwards;
+      opacity:.9;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(0) translateX(0); }
+      to{ transform: translateY(-120vh) translateX(var(--drift)); opacity:0; }
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>YAYYYYYYY 💘</h1>
-    <p>remember to call <strong>020 7646 3375</strong> for a table on the <strong>13</strong> pls and thank you</p>
+    <h1>YAYYYYYYYY 💘</h1>
+
+    <p class="mainText">
+      you have been reserved for the <strong>13 of february</strong> please refrain from making any other plans
+      or <strong>pookie will be sad</strong>. you dont want a sad pookie.
+      make sure you remember to call <strong>020 7646 3375</strong> for a table on the <strong>13</strong>
+      pls and thank you.
+    </p>
+
+    <div class="small">for your troubles:</div>
+
+    <div class="rewards">
+      <div class="reward">
+        <button class="emojiBtn" id="flowersBtn" type="button" aria-label="Flowers">💐</button>
+        <div class="arrowWrap">
+          <span class="arrow">⬆️</span>
+          <span class="clickMe">click me</span>
+        </div>
+      </div>
+
+      <div class="reward">
+        <button class="emojiBtn" id="lipsBtn" type="button" aria-label="Kiss">💋</button>
+        <div class="arrowWrap">
+          <span class="arrow">⬆️</span>
+          <span class="clickMe">click me</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="musicHint">
+      (ps: if you want music, hit play below — browsers usually block autoplay with sound)
+    </div>
+    <button class="musicBtn" id="playBtn" type="button">▶ play the vibe</button>
+
+    <!-- Put your audio file in the repo as "song.mp3" (or rename below) -->
+    <audio id="song" preload="auto">
+      <source src="song.mp3" type="audio/mpeg">
+    </audio>
   </div>
+
+  <script>
+    // Navigate to reward pages
+    document.getElementById("flowersBtn").addEventListener("click", () => {
+      window.location.href = "flowers.html";
+    });
+    document.getElementById("lipsBtn").addEventListener("click", () => {
+      window.location.href = "lips.html";
+    });
+
+    // Music (user interaction required on most browsers)
+    const song = document.getElementById("song");
+    const playBtn = document.getElementById("playBtn");
+
+    playBtn.addEventListener("click", async () => {
+      try{
+        await song.play();
+        playBtn.textContent = "⏸ playing";
+      }catch(e){
+        playBtn.textContent = "tap again to play";
+      }
+    });
+
+    // Cute floating hearts
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = Math.random() > 0.5 ? "💗" : "💖";
+      h.style.left = (Math.random() * window.innerWidth) + "px";
+      h.style.setProperty("--drift", (Math.random()*160 - 80).toFixed(0) + "px");
+      const dur = 4 + Math.random()*3;
+      h.style.animationDuration = dur + "s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(), dur*1000);
+    }
+    setInterval(spawnHeart, 550);
+  </script>
 </body>
 </html>
