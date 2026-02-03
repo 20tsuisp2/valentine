@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>for you 💋</title>
+  <style>
+    :root{
+      --bg1:#ffd6e8;
+      --bg2:#ffb7d5;
+      --text:#3a0f25;
+      --card:#ffffffcc;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color:var(--text);
+    }
+    .card{
+      width:min(900px, 92vw);
+      background: var(--card);
+      border: 2px solid #ffffff80;
+      border-radius: 26px;
+      padding: 18px;
+      text-align:center;
+      box-shadow: 0 18px 45px rgba(0,0,0,.12);
+    }
+    h1{
+      margin: 6px 0 14px;
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 1000;
+    }
+    img{
+      width: 100%;
+      max-width: 680px;
+      border-radius: 22px;
+      border: 2px solid #ffffff90;
+      box-shadow: 0 16px 30px rgba(0,0,0,.12);
+      background: white;
+      display:block;
+      margin: 0 auto 14px;
+    }
+    .back{
+      border:0;
+      background: white;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow: 0 12px 22px rgba(0,0,0,.10);
+    }
+    .note{
+      font-weight:800;
+      opacity:.85;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>a kiss for you 😚💋</h1>
+    <div class="note">if this image doesn’t show, you still haven’t uploaded it to the repo yet 👀</div>
+
+    <!-- Upload your photo file into the repo and name it: kiss.jpg (or change the filename here) -->
+    <img src="kiss.jpg" alt="kiss photo" />
+
+    <button class="back" type="button" onclick="window.location.href='yay.html'">⬅ back</button>
+  </div>
+</body>
+</html>
